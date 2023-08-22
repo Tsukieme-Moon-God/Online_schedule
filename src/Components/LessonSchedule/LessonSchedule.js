@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
 
 const LessonSchedule = ({ scheduleVisible }) => {
+  const [editingCell, setEditingCell] = useState(null);
+  const [scheduleData, setScheduleData] = useState([
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+  ]);
+
+  const handleCellDoubleClick = (rowIndex, columnIndex) => {
+    setEditingCell({ row: rowIndex, column: columnIndex });
+  };
+
+  const handleCellKeyDown = (event, rowIndex, columnIndex) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setEditingCell(null);
+    }
+  };
+
+  const handleCellChange = (event, rowIndex, columnIndex) => {
+    const newScheduleData = [...scheduleData];
+    newScheduleData[rowIndex][columnIndex] = event.target.value;
+    setScheduleData(newScheduleData);
+  };
+
   return (
     <div>
       <h2>Расписание уроков</h2>
@@ -19,48 +45,40 @@ const LessonSchedule = ({ scheduleVisible }) => {
             <th>Пятница</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
 
-          <tr>
-            <td>5</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+        <tbody>
+          {scheduleData.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              <td className="vertical-header">{rowIndex + 1}</td>{" "}
+              {/* Добавьте эту строку */}
+              {row.map((cellValue, columnIndex) => (
+                <td
+                  key={columnIndex}
+                  onDoubleClick={() =>
+                    handleCellDoubleClick(rowIndex, columnIndex)
+                  }
+                >
+                  {editingCell?.row === rowIndex &&
+                  editingCell?.column === columnIndex ? (
+                    <input
+                      type="text"
+                      value={cellValue}
+                      onChange={(event) =>
+                        handleCellChange(event, rowIndex, columnIndex)
+                      }
+                      onKeyDown={(event) =>
+                        handleCellKeyDown(event, rowIndex, columnIndex)
+                      }
+                      onBlur={() => setEditingCell(null)}
+                      autoFocus
+                    />
+                  ) : (
+                    cellValue
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
