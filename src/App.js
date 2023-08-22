@@ -1,26 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import ScheduleTable from './Components/ScheduleTable/ScheduleTable';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-          Во славу Тьмы
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ScheduleTable />
     </div>
   );
-}
+};
 
 export default App;
